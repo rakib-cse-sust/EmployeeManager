@@ -2,7 +2,7 @@
     return {
         getAllCustomers: GetAllCustomers,
         getFormStatusType: GetFormStatusType,
-        uploadFileToUrl: UploadFileToUrl
+        saveEmployee: SaveEmployee
     };
 
     function GetFormStatusType() {
@@ -12,21 +12,13 @@
         }
     }
 
-    function UploadFileToUrl(file, uploadUrl) {
-        var fd = new FormData();
-        fd.append('file', file);
-        $http.post(uploadUrl, fd, {
-            transformRequest: angular.identity,
-            headers: { 'Content-Type': undefined }
-        })
-        .success(function () {
-        })
-        .error(function () {
-        });
+    function SaveEmployee(employee, uploadUrl) {
+        var request = $http.post('/Controllers/EmployeeSetup', employee);
+        return (request.then(handleSuccess, handleError));
     }
 
     function GetAllCustomers() {
-        var request = $http.get('/Global/Advert/Controllers/RCBSubmitBriefReview/' + activityId + '?briefStatusType=' + briefStatusType);
+        var request = $http.get('/Global/Advert/Controllers/EmployeeSetup/' + activityId + '?briefStatusType=' + briefStatusType);
         return (request.then(handleSuccess, handleError));
     }
 

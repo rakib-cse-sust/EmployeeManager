@@ -29,7 +29,6 @@ employeeApp.controller('EmployeeController', function ($scope, $routeParams, $fi
     function init() {
 
         var employee = [
-            { "id": 0, "name": "Robert Williams", "email": "Robert@gmail.com", "imagePath": "/angular/images/George.jpg" },
             { "id": 1, "name": "Khan Jahan", "email": "Khan@gmail.com", "imagePath": "/angular/images/Jahan.jpg" },
             { "id": 2, "name": "Frank Miller", "email": "Frank@gmail.com", "imagePath": "/angular/images/Rakib.jpg" },
             { "id": 3, "name": "James Lewis", "email": "James@gmail.com", "imagePath": "/angular/images/George.jpg" },
@@ -120,6 +119,7 @@ function EmployeeSetupModalController($scope, $http, $modalInstance, settings, e
         if ($scope.Settings.FromStatus == 2) {
             $scope.name = $scope.Settings.Employee.name;
             $scope.email = $scope.Settings.Employee.email;
+            $scope.id = $scope.Settings.Employee.id;
         }
     }
 
@@ -127,25 +127,19 @@ function EmployeeSetupModalController($scope, $http, $modalInstance, settings, e
         $modalInstance.dismiss('cancel');
     };
 
-    $scope.ok = function () {
-        debugger;
-        var file = new FormData();
-        var file1 = $scope.myFile;
-
-        //.append('file', file1);
-        alert();
-        $modalInstance.close($scope.Settings);
-    };
-
-    $scope.uploadFile = function () {
+    $scope.save = function () {
         var file = $scope.myFile;
-        console.log('file is ' + JSON.stringify(file));
+        var employeeObj = {
+            EmployeeName: $scope.name,
+            EmployeeEmail: $scope.email,
+            EmployeeId: $scope.email,
+            EmployeeImage: file
+        };        
+        //console.log('file is ' + JSON.stringify(file));
         var uploadUrl = "/angular/images";
-
-        employeeService.uploadFileToUrl(file, uploadUrl).then(function () {
+        employeeService.saveEmployee(employeeObj, uploadUrl).then(function (data) {
             $modalInstance.close(data);
         });
-
     };
 
 }
